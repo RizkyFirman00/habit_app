@@ -2,6 +2,7 @@ package com.dicoding.habitapp.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -29,9 +30,10 @@ class DetailHabitActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val habitId = intent.getIntExtra(HABIT_ID, 0)
+        Log.d("DetailHabitActivity", "habitId: $habitId")
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory).get(DetailHabitViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[DetailHabitViewModel::class.java]
 
         viewModel.start(habitId)
         viewModel.habit.observe(this) { habit ->

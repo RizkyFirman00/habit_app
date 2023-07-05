@@ -14,6 +14,7 @@ class DetailHabitViewModel(private val habitRepository: HabitRepository): ViewMo
     private val _habit = _habitId.switchMap { id ->
         habitRepository.getHabitById(id)
     }
+
     val habit: LiveData<Habit> = _habit
 
     fun start(habitId: Int) {

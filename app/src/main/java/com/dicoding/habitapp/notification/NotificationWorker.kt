@@ -6,11 +6,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.dicoding.habitapp.R
-import com.dicoding.habitapp.ui.add.AddHabitActivity
+import com.dicoding.habitapp.ui.detail.DetailHabitActivity
 import com.dicoding.habitapp.utils.HABIT_ID
 import com.dicoding.habitapp.utils.HABIT_TITLE
 import com.dicoding.habitapp.utils.NOTIFICATION_CHANNEL_ID
@@ -40,26 +41,28 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
                 )
                 notificationManager.createNotificationChannel(channel)
             }
+            val intent = Intent(applicationContext, DetailHabitActivity::class.java).apply {
+                putExtra(HABIT_ID, habitId)
+            }
 
             val notificationBuilder =
-                NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).apply {
-                    setSmallIcon(R.drawable.ic_notifications)
-                    setContentTitle(habitTitle)
-                    setContentText(applicationContext.getString(R.string.notify_content))
-
-                    val intent = Intent(applicationContext, AddHabitActivity::class.java)
-                    setContentIntent(
+                NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_notifications)
+                    .setContentTitle(habitTitle)
+                    .setContentText(applicationContext.getString(R.string.notify_content))
+                    .setContentIntent(
                         PendingIntent.getActivity(
                             applicationContext,
                             0,
-                            intent,
+                            intent.putExtra(HABIT_ID, habitId),
                             PendingIntent.FLAG_IMMUTABLE
                         )
                     )
-                }
 
             notificationManager.notify(habitId, notificationBuilder.build())
         }
+
+        Log.d("NotificationWorker", "habitId: $habitId")
         return Result.success()
     }
 

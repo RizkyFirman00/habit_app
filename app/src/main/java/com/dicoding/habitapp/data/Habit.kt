@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 data class Habit(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int = 0,
+    var id: Int = 0,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "minutesFocus")

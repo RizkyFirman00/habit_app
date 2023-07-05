@@ -2,6 +2,7 @@ package com.dicoding.habitapp.ui.random
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -32,17 +33,22 @@ class RandomHabitActivity : AppCompatActivity() {
         }.attach()
 
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory).get(RandomHabitViewModel::class.java)
+        val viewModel = ViewModelProvider(this, factory)[RandomHabitViewModel::class.java]
 
         viewModel.priorityLevelHigh.observe(this) {
-            adapter.submitData(RandomHabitAdapter.PageType.HIGH, it)
+            if (it != null) {
+                adapter.submitData(RandomHabitAdapter.PageType.HIGH, it)
+            }
         }
         viewModel.priorityLevelMedium.observe(this) {
-            adapter.submitData(RandomHabitAdapter.PageType.MEDIUM, it)
+            if (it != null) {
+                adapter.submitData(RandomHabitAdapter.PageType.MEDIUM, it)
+            }
         }
         viewModel.priorityLevelLow.observe(this) {
-            adapter.submitData(RandomHabitAdapter.PageType.LOW, it)
+            if (it != null) {
+                adapter.submitData(RandomHabitAdapter.PageType.LOW, it)
+            }
         }
-
     }
 }
